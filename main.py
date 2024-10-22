@@ -17,6 +17,8 @@ if st.sidebar.button("Fonction Affine"):
     st.session_state.page = "Fonction Affine"
 if st.sidebar.button("Data Analyst"):
     st.session_state.page = "Analyst"
+if st.sidebar.button("Loguru"):
+    st.session_state.page = "Loguru"
 
 # Importer et exécuter la page appropriée
 if st.session_state.page == "Initiation":
@@ -28,3 +30,6 @@ elif st.session_state.page == "Fonction Affine":
 elif st.session_state.page == "Analyst":
     from my_pages.Analyst import run_page3
     run_page3()
+elif st.session_state.page == "Loguru":
+    from my_pages.Loguru import run_page4
+    run_page4()
