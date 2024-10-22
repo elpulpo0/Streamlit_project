@@ -12,27 +12,26 @@ cd Streamlit_project/
 **Virtual environnement**
 
 ```bash
-python -m venv .venv
+python -m venv __a_streamlit_project_virtual_environnement
 ```
-> .venv is the name of the virtual environnement 
-
-**Connect to the venv** 
+**Connect to the virtual environnement** 
 
 - mac/linux:
-`source .venv/bin/activate.fish`
+`source __a_streamlit_project_virtual_environnement/bin/activate.fish`
 - windows:
-`.venv/Scripts/activate` or `.venv/Scripts/activate.ps1` 
+`__a_streamlit_project_virtual_environnement/Scripts/activate` or `__a_streamlit_project_virtual_environnement/Scripts/activate.ps1` 
 - bash(windows):
-`source .venv/Scripts/activate`
+`source __a_streamlit_project_virtual_environnement/Scripts/activate`
 
 **Install librairies**
 
 ```bash
+python.exe -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
 **Run the app**
 
 ```bash
-streamlit run affine.py
+streamlit run main.py
 ```

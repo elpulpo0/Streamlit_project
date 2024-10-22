@@ -1,1 +1,3 @@
-.venv
+__a_streamlit_project_virtual_environnement
+__pycache__
+__init__.py
