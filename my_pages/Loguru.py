@@ -11,10 +11,7 @@ if not any(level.name == "POULPE" for level in logger._core.levels.values()):
 
 logger.add(log_buffer, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {name}:{function}:{line} - {message}")
 
-def format_logs(log_output):
-    lines = log_output.splitlines()
-    formatted_lines = []
-    formatted_lines.append("""
+fake_console = """
         <span style="color:green;">chris@pc</span>
         <span style="color:purple;">CUSTOM</span>
         <span style="color:yellow;">~Documents/Github/Projects/Apps/Streamlit/</span>
@@ -22,10 +19,18 @@ def format_logs(log_output):
         <span style="color:white;">$ streamlit run main.py</span><br><br>
         <span style="color:#bd93f9;">You can now view your Streamlit app in your browser.</span><br>
         <span style="color:#bd93f9;">Local URL:</span>
-        <span style="color:white;">http://localhost:000</span><br>
+        <span style="color:white;">http://localhost:8501</span><br>
         <span style="color:#bd93f9;">Network URL:</span>
         <span style="color:white;">https://chris4simplon.streamlit.app</span><br>
-    """)
+    """
+def delete_logs():
+    log_buffer.truncate(0)
+    log_buffer.seek(0)
+
+def format_logs(log_output):
+    lines = log_output.splitlines()
+    formatted_lines = []
+    formatted_lines.append(fake_console)
     for line in lines:
         if "DEBUG" in line:
             formatted_lines.append(f'<span style="color: green;">{line}</span>')
@@ -44,6 +49,7 @@ def format_logs(log_output):
     return "<br>".join(formatted_lines)
 
 def run_page4():
+
     st.header('Exploration des logs avec Loguru')
 
     st.subheader('Paramètres des logs')
@@ -52,29 +58,30 @@ def run_page4():
 
     log_message = st.text_input("Entrez un message de log")
 
-    if 'log_output' not in st.session_state:
-        st.session_state.log_output = ""
-
     def generate_log(log_level, log_message):
+        log_levels = {
+            "DEBUG": logger.debug,
+            "INFO": logger.info,
+            "WARNING": logger.warning,
+            "ERROR": logger.error,
+            "CRITICAL": logger.critical,
+            "POULPE": lambda msg: logger.log("POULPE", msg),
+        }
+
         if log_message:
-            if log_level == "DEBUG":
-                logger.debug(log_message)
-            elif log_level == "INFO":
-                logger.info(log_message)
-            elif log_level == "WARNING":
-                logger.warning(log_message)
-            elif log_level == "ERROR":
-                logger.error(log_message)
-            elif log_level == "CRITICAL":
-                logger.critical(log_message)
-            elif log_level == "POULPE":
-                logger.log("POULPE", log_message)
+            log_function = log_levels.get(log_level)
+            if log_function:
+                log_function(log_message)
 
     if st.button("Générer le log"):
         if log_message:
             generate_log(log_level, log_message)
         else:
             st.warning("Veuillez entrer un message de log.")
+
+    if st.button("Supprimer les logs"):
+        delete_logs()
+
 
     st.subheader("Console des logs")
     log_output = log_buffer.getvalue()
